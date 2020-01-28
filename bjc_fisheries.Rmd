@@ -30,11 +30,41 @@ Inverts Data will be read in here
 
 ```{r data_load}
 
-us_landings <- read_csv(here("data","noaa_landings.csv"))
+us_landings <- read_csv(here("data","noaa_landings.csv"), 
+                        na = "no data")
 
 head(us_landings)
 
 ```
+
+
+## Tidy Data
+
+```{r}
+
+# clean names to fix the table
+
+fresh_fish <- us_landings %>%
+    clean_names() %>% 
+
+# changing the string to not be all caps
+  mutate(afs_name = stringr::str_to_lower(afs_name)) %>% 
+
+# clip the $ off of the dollars_usd column
+  mutate(dollars_usd = parse_number(dollars_usd))
+
+
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
