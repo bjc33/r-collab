@@ -100,7 +100,7 @@ tot_fish <- ggplot(us_cash_fish, aes(x = year, y = tot_value, group = subgroup))
  # theme_economist() + 
   labs(x = "YEAR", y = "US Commercial Salmon Value ($USD)",
        title = "US Salmon Fisheries Valuation by Year ") + 
-  scale_color_paletteer_d("ggthemes::Color Blind")
+  scale_color_paletteer_d("ghibli::LaputaDark")
 
 # ggthemes	Color Blind	10	sequential
 
