@@ -97,10 +97,10 @@ Creating a line graph with X = year, Y = tot_value
 
 tot_fish <- ggplot(us_cash_fish, aes(x = year, y = tot_value, group = subgroup)) +
   geom_line(aes(color = subgroup)) + 
- # theme_economist() + 
+ theme_economist() + 
   labs(x = "YEAR", y = "US Commercial Salmon Value ($USD)",
-       title = "US Salmon Fisheries Valuation by Year ") + 
-  scale_color_paletteer_d("ghibli::LaputaDark")
+       title = "US Salmon Fisheries Valuation by Year ") 
+  #+ scale_color_paletteer_d("ghibli::LaputaDark")
 
 # ggthemes	Color Blind	10	sequential
 
