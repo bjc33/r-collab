@@ -17,6 +17,8 @@ library(tidyverse) #install.packages("tidyverse")
 library(janitor) #install.packages("janitor")
 library(readxl) #install.packages("readxl")
 library(here) #install.packages("here")
+library(ggthemes)
+library(paletteer)
 #library(skimr) #install.packages("skimr")
 #library(kableExtra) #install.packages("kableExtra")
 
@@ -51,13 +53,60 @@ fresh_fish <- us_landings %>%
   mutate(afs_name = stringr::str_to_lower(afs_name)) %>% 
 
 # clip the $ off of the dollars_usd column
-  mutate(dollars_usd = parse_number(dollars_usd))
+  mutate(dollars_usd = parse_number(dollars_usd)) %>% 
+
+# subset just salmon data
+  filter(str_detect(afs_name, pattern = "salmon")) %>% 
+
+# separate the salmon types
+  separate(afs_name,
+           into = c("salmon_group","subgroup"),
+           sep = ", ",) %>% 
+  
+# drop NA values
+  drop_na(dollars_usd)
+  
 
 
 ```
 
 
+## Analyses
 
+Find the annual value by subgroup
+
+```{r}
+
+us_cash_fish <- fresh_fish %>% 
+  group_by(year,subgroup) %>% 
+  summarise(
+    tot_value = sum(dollars_usd)#could put in the na.rm = TRUE here to remove NA
+  )
+  
+
+
+
+```
+
+
+## Plots
+
+Creating a line graph with X = year, Y = tot_value
+
+```{r}
+
+tot_fish <- ggplot(us_cash_fish, aes(x = year, y = tot_value, group = subgroup)) +
+  geom_line(aes(color = subgroup)) + 
+ # theme_economist() + 
+  labs(x = "YEAR", y = "US Commercial Salmon Value ($USD)",
+       title = "US Salmon Fisheries Valuation by Year ") + 
+  scale_color_paletteer_d("ggthemes::Color Blind")
+
+# ggthemes	Color Blind	10	sequential
+
+tot_fish
+
+```
 
 
 
